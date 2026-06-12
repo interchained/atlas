@@ -1,0 +1,120 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;600;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    background-color: #050810;
+    background-image: radial-gradient(
+        1100px 600px at 72% -10%,
+        rgba(22, 52, 95, 0.38),
+        transparent 60%
+      ),
+      radial-gradient(
+        900px 520px at 8% 110%,
+        rgba(22, 52, 95, 0.26),
+        transparent 60%
+      );
+  }
+  ::selection {
+    background: rgba(56, 219, 255, 0.25);
+  }
+}
+
+@layer components {
+  /* Frosted panel — add your own rounded-* per use */
+  .glass {
+    @apply border border-white/10 bg-white/[0.03] backdrop-blur-md;
+  }
+
+  /* Faint blueprint grid, masked toward the horizon */
+  .atlas-grid {
+    background-image: linear-gradient(
+        rgba(141, 166, 255, 0.05) 1px,
+        transparent 1px
+      ),
+      linear-gradient(90deg, rgba(141, 166, 255, 0.05) 1px, transparent 1px);
+    background-size: 56px 56px;
+    -webkit-mask-image: radial-gradient(
+      ellipse 90% 65% at 50% 0%,
+      black 25%,
+      transparent 78%
+    );
+    mask-image: radial-gradient(
+      ellipse 90% 65% at 50% 0%,
+      black 25%,
+      transparent 78%
+    );
+  }
+
+  /* Cyan → red signal gradient for key phrases */
+  .text-gradient {
+    background: linear-gradient(92deg, #38dbff 0%, #8da6ff 45%, #ff4257 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Terminal cursor */
+  .cursor-blink::after {
+    content: "▌";
+    margin-left: 2px;
+    color: #38dbff;
+    animation: atlas-blink 1.1s steps(1) infinite;
+  }
+}
+
+@keyframes atlas-blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes atlas-pulse {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 0.9;
+  }
+}
+
+.animate-pulse-soft {
+  animation: atlas-pulse 3.2s ease-in-out infinite;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #050810;
+}
+::-webkit-scrollbar-thumb {
+  background: #1b2a45;
+  border-radius: 8px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #27406b;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .animate-pulse-soft,
+  .cursor-blink::after {
+    animation: none;
+  }
+}

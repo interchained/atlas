@@ -1,0 +1,40 @@
+# Interchained Atlas — systemd unit for the standalone Next.js server
+#
+# Install:
+#   sudo cp deploy/interchained-atlas.service /etc/systemd/system/
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable --now interchained-atlas
+#   sudo systemctl status interchained-atlas
+#
+# Assumes the built app lives at /var/www/interchained-atlas with the standalone
+# server + copied static/public assets (see deploy/build.sh).
+
+[Unit]
+Description=Interchained Atlas (Next.js standalone)
+After=network.target
+
+[Service]
+Type=simple
+# Use a dedicated low-privilege user in production (e.g. `useradd -r -s /usr/sbin/nologin atlas`)
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/interchained-atlas/.next/standalone
+
+Environment=NODE_ENV=production
+Environment=PORT=3000
+# Bind to localhost ONLY — nginx is the sole public entry point.
+Environment=HOSTNAME=127.0.0.1
+ExecStart=/usr/bin/node server.js
+
+Restart=on-failure
+RestartSec=5
+
+# ── Hardening ───────────────────────────────────────────────────────────────
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/www/interchained-atlas
+
+[Install]
+WantedBy=multi-user.target
